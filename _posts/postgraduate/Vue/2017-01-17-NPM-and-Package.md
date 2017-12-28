@@ -8,50 +8,86 @@ tag: Vue
 * content
 {:toc}
 
-`Node`组织了自身的核心模块，也使得第三方文件模块可以有序地编写和使用。
+> 在用 [`Vue`](https://cn.vuejs.org/) 构建大型应用时推荐使用 [`Node.js`](https://nodejs.org/) 的包管理工具 `NPM` 安装。`NPM` 能很好地和 `webpack` 模块打包器配合使用。同时 Vue 也提供配套工具来开发单文件组件。
 
-<!-- more -->
+## 搭建NodeJs环境 ##
 
-## 包和模块的关系 ##
-### 包目录 ###
-包是一个存档文件，即一个目录。可以直接打包为`.zip`和`tar.gz`格式的文件。完全符合CommonJS规范的包目录应该含有如下文件：
+### 1.下载安装NodeJs ###
 
-- `package.json`：包描述文件
-- `bin`: 用于存放可执行二进制文件的目录
-- `lib`: 用于存放JavaScript代码的目录
-- `doc`: 用于存放文档的目录
-- `test`: 用于存放单元测试用例的代码
+下载并安装最新 [`Node.js`](https://nodejs.org/)
 
+由于新版的nodejs已经集成了npm，所以之前npm也一并安装好了。同样可以通过输入 `node -v` 和 `npm -v` 来测试是否成功安装。命令如下，出现版本提示表示安装成功:
+```
+$ npm -v
+5.6.0
+```
 
+顺便说一下，如果你安装的是旧版本的 npm，可以很容易得通过 npm 命令来升级，命令如下：
+```
+$ npm update -g
+```
 
-### 模块 ###
+升级nodejs的代码也只需要两行代码(stable是稳定版，也可以替换成latest最新版)
 
-> 在NPM官方文档中有一段介绍`module`的[文字][moudle]，引用如下：
+```
+$ npm install -g n
+$ n stable
+```
 
-- A folder with a **package.json** file containing a **main** field.
-- A folder with an **index.js** file in it.
-- A **JavaScript** file.
+如果实在更新不了，直接重新安装覆盖吧，在覆盖的时候要检查之前安装 node 的路径：
+```
+$ where node
+```
 
-### [Most npm packages are modules][package-and-module] ###
+另外，其他常用命令如下，也可以用npm help查看所有命令。
+* `npm install` 在项目文件夹下执行，可安装package.json中引用的包
+* `npm update` <package> 可以把当前目录下node_modules子目录里边的对应模块更新至最新版本。
+* `npm run dev` 启动程序
+* `npm run build` 构建程序到dist文件夹，用来发布
+* `npm config get userconfig` 查看用户配置文件路径。默认为：`C:\Users\Administrator\.npmrc`
+* `npm config get globalconfig` 查看全局配置文件路径
 
-这句话所表达的含义是：并非所有的包会挂载`require()`,所以那些没有挂载`require()`方法的包就不是模块。
+### 2.配置NodeJs全局变量 ###
 
-> 大多挂载`require()`的包是模块。
+npm默认的包下载路径是：`C:\Users\Administrator\AppData\Roaming\npm\node_modules`
+C盘肯定不能来放这些东西，所以需要修改配置文件的包存放路径为适合的地址，我放在了nodejs的根目录下。
+```
+$ npm config set prefix "D:\Program Files\nodejs"
+```
 
-## [包描述文件package.json][paceage.json] ##
+另外，如果直接用npm安装，如果没有科学上网。。。将会下载的很慢，并出现很多不可预测的错误。
+所以我们需要设置npm的国内镜像，如[`npm淘宝镜像`](http://npm.taobao.org/)
+```
+$ npm config set registry https://registry.npm.taobao.org
+```
 
-> 以著名开源框架`express`为例，其`package.json`[文件地址][express.json]。[本目录下地址](express-package.json)。
+至此，环境搭建完成。
 
-## NPM ##
-暂略
+## 初始化vue项目或从GitHub上克隆 ##
+### 1.命令行工具vue-cli初始化Vue ###
+Vue 提供一个官方命令行工具vue-cli，可用于快速搭建大型单页应用。该工具为现代化的前端开发工作流提供了开箱即用的构建配置。只需几分钟即可创建并启动一个带热重载、保存时静态检查以及可用于生产环境的构建配置的项目：
+```
+# 全局安装 vue-cli
+$ npm install --g vue-cli
+# 创建一个基于 webpack 模板的新项目
+$ vue init webpack my-project
+# 安装依赖，走你
+$ cd my-project
+$ npm install
+$ npm run dev
+```
 
-1/17/2017 8:01:17 PM 
+这样，一个简单的Vue程序就初始化完成，现在可以放弃了。
 
+### 2.从GitHub上克隆NodeJs程序 ###
+下载[`Git`](https://git-scm.com/)。
 
-[moudle]:https://docs.npmjs.com/how-npm-works/packages#what-is-a-module "what-is-a-moudle"
-
-[package-and-module]:https://docs.npmjs.com/how-npm-works/packages#most-npm-packages-are-modules 
-
-[package.json]:https://docs.npmjs.com/getting-started/using-a-package.json#requirements 
-
-[express.json]:https://github.com/expressjs/express/blob/master/package.json
+进入准备存放项目的文件夹后，克隆项目
+```
+$ git clone https://github.com/zkwx/JZKFXT_APP.git
+```
+安装，运行
+```
+npm install
+npm run dev
+```
